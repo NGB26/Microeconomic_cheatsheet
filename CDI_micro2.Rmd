@@ -1,0 +1,72 @@
+---
+title: "Microeconomic Theory in R"
+author: "NGB"
+date: "2023-04-07"
+output: html_document
+---
+
+### Microeconomic Theory in R 
+
+First we define the utility function of consumer A as follows:
+$u^A(x,y)=x^\alpha y ^{(1-\alpha)}$
+
+```{r, echo=T}
+
+# Cobb-Douglas utility function of consumer A. 
+utilidad <- function(x, y, alpha) {
+  return(x^alpha * y^(1-alpha))
+}
+
+# We set the range of values
+x <- seq(0, 10, length.out=50)
+y <- seq(0, 10, length.out=50)
+
+# Create a Data frame with all x and y combinations.
+
+df <- expand.grid(x = x, y = y)
+
+# Compute utility values for every value of x and y
+df$z <- with(df, utilidad(x, y, alpha = 0.5))
+
+# Plot it con ggplot
+library(ggplot2)
+
+ggplot(df, aes(x, y)) +
+  geom_contour(aes(z = z), breaks = seq(0, max(df$z), by = 1), color = "blue") +
+  labs(title = "Indifference curves of consumer A") +
+  theme_bw()
+
+
+```
+
+Now, for consumer B we use log-linear preferences defined as
+$u^B(x, y)=\ln(x)+y$
+
+```{r, echo=T}
+
+# Cobb-Douglas utility function of consumer B. 
+utilidad_B <- function(x, y) {
+  return(log(x)+y)
+}
+
+# We set the range of values
+x <- seq(0, 10, length.out=50)
+y <- seq(0, 10, length.out=50)
+
+# Create a Data frame with all x and y combinations.
+
+df <- expand.grid(x = x, y = y)
+
+# Compute utility values for every value of x and y
+df$z <- with(df, utilidad_B(x, y))
+
+# Plot it con ggplot
+library(ggplot2)
+
+ggplot(df, aes(x, y)) +
+  geom_contour(aes(z = z), breaks = seq(0, max(df$z), by = 1), color = "red") +
+  labs(title = "Indifference curves of consumer B") +
+  theme_bw()
+
+
+```
